@@ -21,26 +21,26 @@ class Camera:
         self.y = 0.0
         self.z = 0.0
 
-        self.roll = None
-        self.pitch = None
-        self.yaw = None
+        self.roll = 0
+        self.pitch = 0
+        self.yaw = 0
         
         self.viewMatrix = None
 
-        self.vel = 0.002
+        self.vel = 0.03
 
         self.offsetCamera = glm.vec3(-self.x, -self.y, -self.z)
 
     def move(self):
         keys = get_pressed()
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        if keys[pygame.K_LEFT] or keys[pygame.K_w]:
             self.z -= self.vel
-        elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.x -= self.vel
-        elif keys[pygame.K_UP] or keys[pygame.K_w]:
+        if keys[pygame.K_UP] or keys[pygame.K_a]:
             self.x += self.vel
-        elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.z -= self.vel
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.z += self.vel
 
     def getView(self): 
         self.viewMatrix = glm.identity(glm.mat4x4)
@@ -49,5 +49,7 @@ class Camera:
         self.viewMatrix = glm.rotate(self.viewMatrix, glm.radians(self.roll), glm.vec3(0, 0, 1)) # z-axis
         self.offsetCamera = glm.vec3(-self.x, -self.y, -self.z)
         self.viewMatrix = glm.translate(self.viewMatrix, self.offsetCamera)
-        self.viewMatrix = glm.scale(transform, glm.vec3(e.scale.x, e.scale.y, e.scale.z))
         return self.viewMatrix
+
+    def update(self, shader):
+        shader.setMatrix4f("mat_view", self.getView())

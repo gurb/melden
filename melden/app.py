@@ -11,6 +11,7 @@ from melden.Mesh import *
 
 from melden.Renderer import *
 from melden.Entity import *
+from melden.Camera import *
 
 class App:
     def __init__(self):
@@ -43,6 +44,8 @@ class App:
         self.entities = []
 
         self.e = Entity(self.model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+
+        self.camera = Camera()
         # precision = 3
         # self.angle = 0
         # for e in range(50):
@@ -70,10 +73,12 @@ class App:
         self.dt = self.clock.tick(60) / 1000
         glViewport(0, 0, self.width, self.height)
         self.renderer.clear()
-    
+
+        self.camera.move()
         # self.angle = 3
         # for e in self.entities:    
         #     e.rotate(0,0,self.angle)
         #     self.renderer.render(self.shader, e)
-        self.e.translate(0,0,-0.1)
+        # self.e.translate(0,0,-0.1)
+        self.camera.update(self.shader)
         self.renderer.render(self.shader, self.e)

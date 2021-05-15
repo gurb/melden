@@ -10,6 +10,6 @@ uniform mat4 mat_projection;
 uniform mat4 mat_view;
 
 void main(){
-    gl_Position = mat_projection * mat_transform * vec4(position, 1.0);
+    gl_Position = mat_projection * mat_view * mat_transform * vec4(position, 1.0);
     passTexCoords = texCoords;
 }
