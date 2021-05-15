@@ -1,4 +1,4 @@
-from src.app import *
+from melden.app import *
 
 if __name__ == "__main__":
     a = App()

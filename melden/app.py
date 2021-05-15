@@ -6,11 +6,11 @@ from ctypes import sizeof, c_void_p
 from random import randint, uniform
 import glm
 
-from src.shaders.ShaderProgram import *
-from src.Mesh import *
+from melden.shaders.ShaderProgram import *
+from melden.Mesh import *
 
-from src.Renderer import *
-from src.Entity import *
+from melden.Renderer import *
+from melden.Entity import *
 
 class App:
     def __init__(self):
@@ -23,28 +23,33 @@ class App:
         self.generate()
 
     def generate(self):
-        self.renderer = Renderer()
-        
-        self.shader = ShaderProgram("./src/shaders/vs.glsl", "./src/shaders/fs.glsl")
+        self.shader = ShaderProgram("./melden/shaders/vs.glsl", "./melden/shaders/fs.glsl")
         self.shader.addUniform("screen_dim")
         self.shader.addUniform("mat_transform")
+        self.shader.addUniform("mat_projection")
+        self.shader.addUniform("mat_view")
         self.meshes = []
+
+        self.renderer = Renderer(self.shader)
+
 
         self.pos = glm.vec2(0,0)
         self.angle = 0
 
         self.transform = glm.identity(glm.mat3x3)
 
-        self.model = Mesh((-1.0, -0.0), (.3,.3), "./src/res/image.png")
+        self.model = Mesh((-1.0, -0.0), (.3,.3), "./melden/res/image.png")
 
         self.entities = []
-        precision = 3
-        self.angle = 0
-        for e in range(50):
-            x = round(uniform(-1, 1), precision)
-            y = round(uniform(-1, 1), precision)
-            z = round(uniform(-1, 1), precision)
-            self.entities.append(Entity(self.model, Vector3(x,y,0), Vector3(0.0,0.0,0.0), Vector3(x,y,.1)))        
+
+        self.e = Entity(self.model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        # precision = 3
+        # self.angle = 0
+        # for e in range(50):
+        #     x = round(uniform(-1, 1), precision)
+        #     y = round(uniform(-1, 1), precision)
+        #     z = round(uniform(-1, 1), precision)
+        #     self.entities.append(Entity(self.model, Vector3(x,y,0), Vector3(0.0,0.0,0.0), Vector3(x,y,.1)))        
         
     def execute(self):
         while self.running:
@@ -66,10 +71,9 @@ class App:
         glViewport(0, 0, self.width, self.height)
         self.renderer.clear()
     
-        self.angle = 3
-        for e in self.entities:    
-            e.rotate(0,0,self.angle)
-            self.renderer.render(self.shader, e)
-
-
-
+        # self.angle = 3
+        # for e in self.entities:    
+        #     e.rotate(0,0,self.angle)
+        #     self.renderer.render(self.shader, e)
+        self.e.translate(0,0,-0.1)
+        self.renderer.render(self.shader, self.e)

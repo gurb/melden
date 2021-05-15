@@ -2,8 +2,15 @@ from OpenGL.GL import *
 import glm
 
 class Renderer:
-    def __init__(self):
-        pass
+    def __init__(self, shader):
+        self.fov = 70
+        self.near_plane = 0.1
+        self.far_plane = 5
+
+        shader.use()
+        self.projectionMatrix = None
+        self.getProjectionMatrix()
+        shader.setMatrix4f("mat_projection", self.projectionMatrix)  
 
     def clear(self):
         glClearColor(.4, 0.1, 0.4, 1.0)
@@ -26,3 +33,7 @@ class Renderer:
         shader.setMatrix4f("mat_transform", transform)  
 
         glDrawArrays(GL_TRIANGLES, 0, model.vertex_count)
+
+    def getProjectionMatrix(self):
+        self.projectionMatrix = glm.perspective(glm.radians(self.fov), float(1280/720), self.near_plane, self.far_plane)
+        
