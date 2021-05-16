@@ -10,7 +10,7 @@ class Entity:
         self.angle_y = 0
         self.angle_z = 0
         self.set_angle()
-
+        
         self.scale = scale
 
     def translate(self, x, y, z):

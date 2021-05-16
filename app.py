@@ -6,12 +6,12 @@ from ctypes import sizeof, c_void_p
 from random import randint, uniform
 import glm
 
-from melden.shaders.ShaderProgram import *
-from melden.Mesh import *
+from shaders.ShaderProgram import *
+from Mesh import *
 
-from melden.Renderer import *
-from melden.Entity import *
-from melden.Camera import *
+from Renderer import *
+from Entity import *
+from Camera import *
 
 class App:
     def __init__(self):
@@ -24,7 +24,7 @@ class App:
         self.generate()
 
     def generate(self):
-        self.shader = ShaderProgram("./melden/shaders/vs.glsl", "./melden/shaders/fs.glsl")
+        self.shader = ShaderProgram("./shaders/vs.glsl", "./shaders/fs.glsl")
         self.shader.addUniform("screen_dim")
         self.shader.addUniform("mat_transform")
         self.shader.addUniform("mat_projection")
@@ -39,7 +39,7 @@ class App:
 
         self.transform = glm.identity(glm.mat3x3)
 
-        self.model = Mesh((-1.0, -0.0), (.3,.3), "./melden/res/image.png")
+        self.model = Mesh((-1.0, -0.0), (.3,.3), "./res/image.png")
 
         self.entities = []
 
