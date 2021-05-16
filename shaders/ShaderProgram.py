@@ -45,6 +45,9 @@ class ShaderProgram:
     def setMatrix4f(self, uniformName, matrix4x4):
         glUniformMatrix4fv(self.uniforms[uniformName], 1, GL_FALSE, glm.value_ptr(matrix4x4))
 
+    def setVec3(self, uniformName, x, y, z):
+        glUniform3f(self.uniforms[uniformName], x, y, z)
+
     def read_file(self, path):
         with open(path) as f:
             text = f.read()

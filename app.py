@@ -11,6 +11,7 @@ from Mesh import *
 
 from Renderer import *
 from Entity import *
+from Light import *
 from Camera import *
 
 class App:
@@ -29,6 +30,11 @@ class App:
         self.shader.addUniform("mat_transform")
         self.shader.addUniform("mat_projection")
         self.shader.addUniform("mat_view")
+        
+        self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
+        self.lightShader.addUniform("objectColor")
+        self.lightShader.addUniform("lightColor")
+
         self.meshes = []
 
         self.renderer = Renderer(self.shader)
@@ -40,10 +46,13 @@ class App:
         self.transform = glm.identity(glm.mat3x3)
 
         self.model = Mesh((-1.0, -0.0), (.3,.3), "./res/image.png")
+        self.light_model = Light(0.5)
+    
 
         self.entities = []
 
         self.e = Entity(self.model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.light_model = Entity(self.light_model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
 
         self.camera = Camera()
         # precision = 3
