@@ -32,13 +32,21 @@ class App:
         self.shader.addUniform("mat_view")
         
         self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
+        self.lightShader.addUniform("mat_transform")
+        self.lightShader.addUniform("mat_view")
+        self.lightShader.addUniform("mat_projection")
         self.lightShader.addUniform("objectColor")
         self.lightShader.addUniform("lightColor")
+    
+        self.shaders = [
+            self.shader,
+            self.lightShader
+        ]
 
         self.meshes = []
 
-        self.renderer = Renderer(self.shader)
-
+        self.renderer = Renderer(self.shaders)
+        
 
         self.pos = glm.vec2(0,0)
         self.angle = 0
@@ -48,11 +56,16 @@ class App:
         self.model = Mesh((-1.0, -0.0), (.3,.3), "./res/image.png")
         self.light_model = Light(0.5)
     
+        self.e = Entity(self.model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.light_model = Entity(self.light_model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+
+        self.shadersDict = {
+            self.e : [self.shader, False]
+            # self.light_model : [self.lightShader, True]
+        }
 
         self.entities = []
 
-        self.e = Entity(self.model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
-        self.light_model = Entity(self.light_model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
 
         self.camera = Camera()
         # precision = 3
@@ -89,5 +102,5 @@ class App:
         #     e.rotate(0,0,self.angle)
         #     self.renderer.render(self.shader, e)
         # self.e.translate(0,0,-0.1)
-        self.camera.update(self.shader)
-        self.renderer.render(self.shader, self.e)
+        self.camera.update(self.shaders)
+        self.renderer.render(self.shadersDict)

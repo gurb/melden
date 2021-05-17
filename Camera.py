@@ -51,5 +51,6 @@ class Camera:
         self.viewMatrix = glm.translate(self.viewMatrix, self.offsetCamera)
         return self.viewMatrix
 
-    def update(self, shader):
-        shader.setMatrix4f("mat_view", self.getView())
+    def update(self, shaders):
+        for shader in shaders:
+            shader.setMatrix4f("mat_view", self.getView())

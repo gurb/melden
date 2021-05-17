@@ -23,7 +23,7 @@ class Light:
             -len/2,  len/2,  len/2, 0.0, 0.0, 1.0, 1.0  # 7
         ]
         self.vertices = numpy.array(self.vertices, dtype=numpy.float32)
-
+        print(self.vertices)
         self.indices = [
             7, 3, 2,    7, 2, 6,    # front face (two triangles)
             6, 2, 1,    6, 1, 5,    # back face
@@ -33,6 +33,8 @@ class Light:
             7, 3, 0,    7, 0, 4     # left face
         ]
         self.indices = numpy.array(self.indices, dtype=numpy.uintc)
+        print(self.indices)
+        self.indices_len = 7
 
         self.vao = glGenVertexArrays(1)
         self.vbo = glGenBuffers(1)
@@ -41,7 +43,6 @@ class Light:
         glBindVertexArray(self.vao)
 
         glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
-        glBufferData(GL_ARRAY_BUFFER, self.vertices.nbytes)
 
         glBufferData(GL_ARRAY_BUFFER, self.vertices.nbytes, self.vertices, GL_STATIC_DRAW)
         glEnableVertexAttribArray(0)
