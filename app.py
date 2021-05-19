@@ -18,8 +18,8 @@ from Cube import *
 class App:
     def __init__(self):
         pygame.init()
-        self.width = 1280
-        self.height = 720
+        self.width = 1440
+        self.height = 900
         self.display = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF|pygame.OPENGL)
         self.clock = pygame.time.Clock()
         self.running = True
@@ -70,15 +70,14 @@ class App:
         }
         precision = 3
         self.cube_entities = []
-        for i in range(50):
-            x = round(uniform(-5, 5), precision)
-            y = round(uniform(-5, 5), precision)
-            z = round(uniform(-5, 5), precision)
+        for i in range(1000):
+            x = round(uniform(-10, 10), precision)
+            y = round(uniform(-10, 10), precision)
+            z = round(uniform(-10, 10), precision)
             self.cube_entities.append(Entity(self.cube_model, Vector3(x,y,z), Vector3(0.0,0.0,0.0), Vector3(0.5,0.5,0.5))) 
             self.shadersDict[self.cube_entities[i]] = [self.cubeShader, True]    
 
         # self.cube_entities = Entity(self.cube_model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
-
 
         self.camera = Camera()
         # precision = 3
@@ -114,11 +113,11 @@ class App:
         # self.lightShader.use()
         # self.light_e.model.draw()
         
-        # self.angle = 3
-        # for e in self.entities:    
-        #     e.rotate(0,0,self.angle)
-        #     self.renderer.render(self.shader, e)
-        # self.e.translate(0,0,-0.1)
+        
+        for e in self.cube_entities:    
+            e.rotate(3,5,3)
+
+
         self.camera.update(self.shaders)
 
         self.renderer.render(self.shadersDict)

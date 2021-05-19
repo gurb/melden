@@ -5,7 +5,7 @@ class Renderer:
     def __init__(self, shaders):
         self.fov = 70
         self.near_plane = 0.1
-        self.far_plane = 5
+        self.far_plane = 15
         self.shaders = shaders
 
         for shader in self.shaders:
@@ -27,7 +27,7 @@ class Renderer:
             e = entity
             model = entity.model
             glBindVertexArray(model.vao)
-
+                
             transform = glm.identity(glm.mat4x4)
             transform = glm.translate(transform, glm.vec3(e.pos.x, e.pos.y, e.pos.z))
             transform = glm.rotate(transform, glm.radians(e.angle_x), glm.vec3(1, 0, 0)) # x-axis

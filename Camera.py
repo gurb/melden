@@ -36,11 +36,15 @@ class Camera:
         if keys[pygame.K_LEFT] or keys[pygame.K_w]:
             self.z -= self.vel
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.x -= self.vel
-        if keys[pygame.K_UP] or keys[pygame.K_a]:
             self.x += self.vel
+        if keys[pygame.K_UP] or keys[pygame.K_a]:
+            self.x -= self.vel
         if keys[pygame.K_DOWN] or keys[pygame.K_s]:
             self.z += self.vel
+        if keys[pygame.K_q]:
+            self.roll -= 1
+        if keys[pygame.K_e]:
+            self.roll += 1
 
     def getView(self): 
         self.viewMatrix = glm.identity(glm.mat4x4)
