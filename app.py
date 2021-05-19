@@ -13,6 +13,7 @@ from Renderer import *
 from Entity import *
 from Light import *
 from Camera import *
+from Cube import *
 
 class App:
     def __init__(self):
@@ -31,16 +32,22 @@ class App:
         self.shader.addUniform("mat_projection")
         self.shader.addUniform("mat_view")
         
-        self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
-        self.lightShader.addUniform("mat_transform")
-        self.lightShader.addUniform("mat_view")
-        self.lightShader.addUniform("mat_projection")
-        self.lightShader.addUniform("objectColor")
-        self.lightShader.addUniform("lightColor")
-    
+
+        self.cubeShader =  ShaderProgram("./shaders/cube_vs.glsl", "./shaders/cube_fs.glsl")
+        self.cubeShader.addUniform("mat_transform")
+        self.cubeShader.addUniform("mat_projection")
+        self.cubeShader.addUniform("mat_view")
+
+        # self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
+        # self.lightShader.addUniform("mat_transform")
+        # self.lightShader.addUniform("mat_view")
+        # self.lightShader.addUniform("mat_projection")
+        # self.lightShader.addUniform("objectColor")
+        # self.lightShader.addUniform("lightColor")
+
         self.shaders = [
             self.shader,
-            self.lightShader
+            self.cubeShader
         ]
 
         self.meshes = []
@@ -54,14 +61,15 @@ class App:
         self.transform = glm.identity(glm.mat3x3)
 
         self.model = Mesh((-1.0, -0.0), (.3,.3), "./res/image.png")
-        self.light_model = Light(0.5)
+        self.cube_model = Cube()
+        # self.light_model = Light(0.5)
     
-        self.e = Entity(self.model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
-        self.light_model = Entity(self.light_model, Vector3(0,0,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.e = Entity(self.model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.cube = Entity(self.cube_model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
 
         self.shadersDict = {
-            self.e : [self.shader, False]
-            # self.light_model : [self.lightShader, True]
+            self.e : [self.shader, False],
+            self.cube : [self.cubeShader, True]
         }
 
         self.entities = []
@@ -97,10 +105,15 @@ class App:
         self.renderer.clear()
 
         self.camera.move()
+
+        # self.lightShader.use()
+        # self.light_e.model.draw()
+        
         # self.angle = 3
         # for e in self.entities:    
         #     e.rotate(0,0,self.angle)
         #     self.renderer.render(self.shader, e)
         # self.e.translate(0,0,-0.1)
         self.camera.update(self.shaders)
+
         self.renderer.render(self.shadersDict)

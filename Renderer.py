@@ -12,11 +12,13 @@ class Renderer:
             shader.use()
             self.projectionMatrix = None
             self.getProjectionMatrix()
-            shader.setMatrix4f("mat_projection", self.projectionMatrix)  
+            shader.setMatrix4f("mat_projection", self.projectionMatrix)
+
+        glEnable(GL_DEPTH_TEST)
 
     def clear(self):
         glClearColor(.4, 0.1, 0.4, 1.0)
-        glClear(GL_COLOR_BUFFER_BIT)
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
     def render(self, shadersDict):
         for entity in shadersDict:
@@ -36,9 +38,7 @@ class Renderer:
             shadersDict[entity][0].setMatrix4f("mat_transform", transform)  
 
             if shadersDict[entity][1]:
-                shadersDict[entity][0].setVec3("objectColor", 1.0, 0.5, 0.31)
-                shadersDict[entity][0].setVec3("lightColor", 1.0, 1.0, 1.0)
-                glDrawElements(GL_TRIANGLES, model.indices_len, GL_UNSIGNED_INT, 0)
+                glDrawElements(GL_TRIANGLES, model.indices_len, GL_UNSIGNED_INT, None)
             else:
                 glDrawArrays(GL_TRIANGLES, 0, model.vertex_count)
 
