@@ -65,14 +65,19 @@ class App:
         # self.light_model = Light(0.5)
     
         self.e = Entity(self.model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
-        self.cube = Entity(self.cube_model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
-
         self.shadersDict = {
             self.e : [self.shader, False],
-            self.cube : [self.cubeShader, True]
         }
+        precision = 3
+        self.cube_entities = []
+        for i in range(50):
+            x = round(uniform(-5, 5), precision)
+            y = round(uniform(-5, 5), precision)
+            z = round(uniform(-5, 5), precision)
+            self.cube_entities.append(Entity(self.cube_model, Vector3(x,y,z), Vector3(0.0,0.0,0.0), Vector3(0.5,0.5,0.5))) 
+            self.shadersDict[self.cube_entities[i]] = [self.cubeShader, True]    
 
-        self.entities = []
+        # self.cube_entities = Entity(self.cube_model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
 
 
         self.camera = Camera()
