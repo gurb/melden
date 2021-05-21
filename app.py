@@ -32,7 +32,6 @@ class App:
         self.shader.addUniform("mat_projection")
         self.shader.addUniform("mat_view")
         
-
         self.cubeShader =  ShaderProgram("./shaders/cube_vs.glsl", "./shaders/cube_fs.glsl")
         self.cubeShader.addUniform("mat_transform")
         self.cubeShader.addUniform("mat_projection")
@@ -43,13 +42,7 @@ class App:
         self.lightShader.addUniform("mat_projection")
         self.lightShader.addUniform("mat_view")
 
-        # self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
-        # self.lightShader.addUniform("mat_transform")
-        # self.lightShader.addUniform("mat_view")
-        # self.lightShader.addUniform("mat_projection")
-        # self.lightShader.addUniform("objectColor")
-        # self.lightShader.addUniform("lightColor")
-
+        # ** every shader must be added list of shader called shaders
         self.shaders = [
             self.shader,
             self.cubeShader,
@@ -72,7 +65,7 @@ class App:
     
         self.e = Entity(self.model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
         self.cube_entity = Entity(self.cube_model, Vector3(-1,-1,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
-        self.light_entity = Entity(self.light_model, Vector3(-0.5,-0.5,-0.5), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.light_entity = Entity(self.light_model, Vector3(-0.5,-0.5,-0.5), Vector3(0.0,0.0,0.0), Vector3(0.2,0.2,0.2))
         self.shadersDict = {
             self.e : [self.shader, False],
             self.cube_entity : [self.cubeShader, True],

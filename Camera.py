@@ -57,4 +57,5 @@ class Camera:
 
     def update(self, shaders):
         for shader in shaders:
+            shader.use()
             shader.setMatrix4f("mat_view", self.getView())

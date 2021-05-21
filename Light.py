@@ -45,3 +45,7 @@ class Light:
 
         glEnableVertexAttribArray(0)
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, c_void_p(0))
+
+    def draw(self):
+        glBindVertexArray(self.vao)
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, None)
