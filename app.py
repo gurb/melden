@@ -38,6 +38,11 @@ class App:
         self.cubeShader.addUniform("mat_projection")
         self.cubeShader.addUniform("mat_view")
 
+        self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
+        self.lightShader.addUniform("mat_transform")
+        self.lightShader.addUniform("mat_projection")
+        self.lightShader.addUniform("mat_view")
+
         # self.lightShader = ShaderProgram("./shaders/light_vs.glsl", "./shaders/light_fs.glsl")
         # self.lightShader.addUniform("mat_transform")
         # self.lightShader.addUniform("mat_view")
@@ -47,14 +52,14 @@ class App:
 
         self.shaders = [
             self.shader,
-            self.cubeShader
+            self.cubeShader,
+            self.lightShader
         ]
 
         self.meshes = []
 
         self.renderer = Renderer(self.shaders)
         
-
         self.pos = glm.vec2(0,0)
         self.angle = 0
 
@@ -62,31 +67,30 @@ class App:
 
         self.model = Mesh((-1.0, -0.0), (.3,.3), "./res/image.png")
         self.cube_model = Cube()
+        self.light_model = Light()
         # self.light_model = Light(0.5)
     
         self.e = Entity(self.model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.cube_entity = Entity(self.cube_model, Vector3(-1,-1,-1), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
+        self.light_entity = Entity(self.light_model, Vector3(-0.5,-0.5,-0.5), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
         self.shadersDict = {
             self.e : [self.shader, False],
+            self.cube_entity : [self.cubeShader, True],
+            self.light_entity : [self.lightShader, True]
         }
         precision = 3
         self.cube_entities = []
-        for i in range(1000):
-            x = round(uniform(-10, 10), precision)
-            y = round(uniform(-10, 10), precision)
-            z = round(uniform(-10, 10), precision)
+        r = 3
+        for i in range(10):
+            x = round(uniform(-r, r), precision)
+            y = round(uniform(-r, r), precision)
+            z = round(uniform(-r, r), precision)
             self.cube_entities.append(Entity(self.cube_model, Vector3(x,y,z), Vector3(0.0,0.0,0.0), Vector3(0.5,0.5,0.5))) 
             self.shadersDict[self.cube_entities[i]] = [self.cubeShader, True]    
 
         # self.cube_entities = Entity(self.cube_model, Vector3(0,0,0), Vector3(0.0,0.0,0.0), Vector3(1,1,1))
 
-        self.camera = Camera()
-        # precision = 3
-        # self.angle = 0
-        # for e in range(50):
-        #     x = round(uniform(-1, 1), precision)
-        #     y = round(uniform(-1, 1), precision)
-        #     z = round(uniform(-1, 1), precision)
-        #     self.entities.append(Entity(self.model, Vector3(x,y,0), Vector3(0.0,0.0,0.0), Vector3(x,y,.1)))        
+        self.camera = Camera()     
         
     def execute(self):
         while self.running:
@@ -116,6 +120,8 @@ class App:
         
         for e in self.cube_entities:    
             e.rotate(3,5,3)
+
+        self.light_entity.rotate(3, 0, 0)
 
 
         self.camera.update(self.shaders)
